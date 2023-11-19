@@ -1,0 +1,119 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Form</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #jsonForm {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-content: center;
+      align-items: center;
+    }
+
+    .navbar {
+      overflow: hidden;
+      background-color: rgb(21, 255, 0);
+      margin-bottom: 30px;
+    }
+
+    .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+
+    /* On hover, the links will change color */
+    .navbar a:hover {
+      opacity: 0.5;
+      /* background-color: blue; */
+      color: black;
+    }
+
+    .btn:hover {
+      background-color: lightblue;
+    }
+
+    .btn {
+      cursor: pointer;
+      padding: 12px 32px;
+      background: #1dd846;
+      color: white;
+      border: none;
+      font-size: 20px;
+      border-radius: 6px;
+    }
+
+    #jsonData {
+      font-size: large;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    h1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0 20px 0px;
+    }
+  </style>
+
+  <body>
+    <div class="navbar">
+      <a href="/">Home</a>
+      <a href="/get_logs">Query Filter</a>
+      <a href="/">Insert Logs Query</a>
+      <a href="/multiple_log_query">Multiple Query Filters</a>
+    </div>
+
+    <h1>JSON Input Log Query</h1>
+
+    <form id="jsonForm">
+      <!-- <label for="jsonData">Enter JSON data:</label> -->
+      <textarea
+        id="jsonData"
+        name="jsonData"
+        rows="12"
+        cols="50"
+        placeholder="Enter Json logs.."
+        spellcheck="false"
+      ></textarea>
+      <br />
+      <input type="button" value="Submit" class="btn" onclick="submitForm()" />
+    </form>
+
+    <script>
+      function submitForm() {
+        var jsonData = document.getElementById("jsonData").value;
+
+        // Parse the JSON data to ensure it is valid
+        try {
+          jsonData = JSON.parse(jsonData);
+        } catch (e) {
+          console.error("Invalid JSON data:", e);
+          return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/insert_logs", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        // Send the JSON data as the request payload
+        xhr.send(JSON.stringify(jsonData));
+        alert("Log Uploaded Successfully !");
+      }
+    </script>
+  </body>
+</html>

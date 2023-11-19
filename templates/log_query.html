@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Log Search Interface</title>
+    <style>
+      /* Basic CSS styling */
+      /* Add your own styles for UI enhancement */
+      /* For simplicity, inline styles are used here */
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .navbar {
+        overflow: hidden;
+        background-color: #00ff0d;
+        margin-bottom: 30px;
+      }
+
+      .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+      }
+
+      /* On hover, the links will change color */
+      .navbar a:hover {
+        opacity: 0.5;
+        /* background-color: blue; */
+        color: black;
+      }
+
+      .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .search-input {
+        border-radius: 10px;
+        flex: 0.5;
+        margin-right: 15px;
+        padding: 11px;
+        font-size: 16px;
+        border: none;
+        background: lightgray;
+      }
+
+      .filter-dropdown {
+        cursor: pointer;
+        margin-right: 15px;
+        padding: 8px;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+      }
+
+      .search-button {
+        padding: 8px 16px;
+        font-size: 16px;
+        background-color: #00ff08;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .log-results {
+        margin: 0 300px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      .log-item {
+        margin-bottom: 8px;
+      }
+      pre {
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <a href="/">Home</a>
+      <a href="/get_logs">Query Filter</a>
+      <a href="/">Insert Logs Query</a>
+      <a href="/multiple_log_query">Multiple Query Filters</a>
+    </div>
+
+    <div class="search-container">
+      <form id="searchForm" method="post" action="/get_logs">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          name="value"
+          placeholder="Enter search query..."
+        />
+        <select id="filterSelect" class="filter-dropdown" name="option">
+          <option value="level">Level</option>
+          <option value="message">Message</option>
+          <option value="resourceId">Resource ID</option>
+          <option value="timestamp">Timestamp</option>
+          <option value="traceId">Trace ID</option>
+          <option value="spanId">Span ID</option>
+          <option value="commit">Commit</option>
+          <option value="parentResourceId">Parent Resource ID</option>
+        </select>
+        <input type="submit" class="search-button" value="SEARCH" />
+      </form>
+    </div>
+
+    <div class="log-results" id="logResults">
+      <!-- Results will appear here -->
+      <pre id="jsonOutput">
+            {% if result == "ok" %}
+            <script>
+                // Sample JSON data
+                var jsonData = {{ data | tojson | safe }};
+    
+                // Format JSON data with indentation
+                var formattedJson = JSON.stringify(jsonData, null, 2);
+    
+                // Display formatted JSON data in the pre tag
+                document.getElementById('jsonOutput').textContent = formattedJson;
+            </script>
+            {% elif result %}
+                <p>{{ result }}</p>
+            {% endif %}</pre>
+    </div>
+
+    <script>
+      function searchLogs() {
+        // This function would typically make an AJAX request to the server
+        // to perform the search based on input and selected filter
+
+        const searchInput = document.getElementById("searchInput").value;
+        const filterSelect = document.getElementById("filterSelect");
+        const selectedFilter = filterSelect.value;
+        const logResultsContainer = document.getElementById("logResults");
+
+        // Simulated logs (replace with actual log data retrieval)
+        const logs = [
+          // Sample log objects (similar to previous examples)
+          // Populate logs based on actual search results from the server
+        ];
+
+        // Filter logs based on the selected filter and search input
+        const filteredLogs = logs.filter((log) => {
+          if (selectedFilter === "parentResourceId") {
+            return (
+              log.metadata &&
+              log.metadata.parentResourceId.includes(searchInput)
+            );
+          } else {
+            return log[selectedFilter].includes(searchInput);
+          }
+        });
+
+        // Display search results
+        logResultsContainer.innerHTML = "";
+        if (filteredLogs.length > 0) {
+          filteredLogs.forEach((log) => {
+            const logItem = document.createElement("div");
+            logItem.classList.add("log-item");
+            logItem.textContent = JSON.stringify(log);
+            logResultsContainer.appendChild(logItem);
+          });
+        } else {
+          logResultsContainer.textContent = "No results found.";
+        }
+      }
+    </script>
+  </body>
+</html>

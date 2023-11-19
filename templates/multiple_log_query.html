@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Multiple Checkboxes with Input Boxes</title>
+    <style>
+        /* CSS styles for checkbox and input box */
+        /* Style can be customized further */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #00ff1a;
+            margin-bottom: 30px;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        /* On hover, the links will change color */
+        .navbar a:hover {
+            opacity: 0.5;
+            /* background-color: blue; */
+            color: black;
+        }
+
+        .checkbox-container {
+            display: flex;
+            margin-right: 10px;
+            align-items: center;
+        }
+
+        .checkbox-label {
+            display: inline-block;
+            position: relative;
+            padding-left: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            user-select: none;
+        }
+
+        .checkbox-label input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid #1eff00;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-label input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .input-box {
+            
+            margin-top: 10px;
+        }
+
+        .input-box input[type="text"] {
+            padding: 7px;
+    font-size: 12px;
+    margin-right: 15px;
+    border-radius: 6px;
+    border: 1px solid gray;
+        }
+        .btn{
+            margin: auto;
+    display: flex;
+    padding: 8px 18px;
+    border-radius: 10px;
+    background: lightblue;
+    border: none;
+    cursor: pointer;
+        }
+
+
+        .box {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        .main1{
+            display: flex;
+            justify-content: center ;
+        }
+        .log-results {
+            margin: 20px 300px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+        }
+
+        .log-item {
+            margin-bottom: 8px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/get_logs">Query Filter</a>
+        <a href="/">Insert Logs Query</a>
+        <a href="/multiple_log_query">Multiple  Query Filters</a>
+    </div>
+    <div class="main">
+        <!-- 8 different checkboxes with input boxes -->
+    <form method="post" action="/multiple_log_query">
+        <div class="main1">
+            <div class="box">
+                <label class="checkbox-container">
+                    <span class="checkbox-label">Level
+                        <input type="checkbox" id="toggleCheckboxLevel">
+                        <span class="checkmark"></span>
+                    </span>
+                </label>
+                <div class="input-box" id="inputBoxLevel">
+                    <input type="text" placeholder="Enter Level" name = "level">
+                </div>
+            </div>
+            <div class="box">
+                <label class="checkbox-container">
+                    <span class="checkbox-label">Message
+                        <input type="checkbox" id="toggleCheckboxMessage">
+                        <span class="checkmark"></span>
+                    </span>
+                </label>
+                <div class="input-box" id="inputBoxMessage">
+                    <input type="text" placeholder="Enter Message" name = "message">
+                </div>
+            </div>
+            <div class="box">
+                <label class="checkbox-container">
+                    <span class="checkbox-label">ID
+                        <input type="checkbox" id="toggleCheckboxID">
+                        <span class="checkmark"></span>
+                    </span>
+                </label>
+                <div class="input-box" id="inputBoxID">
+                    <input type="text" placeholder="Enter resource ID" name = "resourceId">
+                </div>
+            </div>
+            <div class="box">
+                <label class="checkbox-container">
+                    <span class="checkbox-label">Span
+                        <input type="checkbox" id="toggleCheckboxSpan">
+                        <span class="checkmark"></span>
+                    </span>
+                </label>
+                <div class="input-box" id="inputBoxSpan">
+                    <input type="text" placeholder="Enter Span ID" name = "spanId">
+                </div>
+            </div>
+            
+        </div>
+        <div class="main1">
+            <div class="box">
+                <label class="checkbox-container">
+                    <span class="checkbox-label">Commit
+                        <input type="checkbox" id="toggleCheckboxCommit">
+                        <span class="checkmark"></span>
+                    </span>
+                </label>
+                <div class="input-box" id="inputBoxCommit">
+                    <input type="text" placeholder="Enter Commit" name = "commit">
+                </div>
+            </div>
+            <div class="box">
+                <label class="checkbox-container">
+                    <span class="checkbox-label">Parent Resource ID
+                        <input type="checkbox" id="toggleCheckboxParentResourceID">
+                        <span class="checkmark"></span>
+                    </span>
+                </label>
+                <div class="input-box" id="inputBoxParentResourceID">
+                    <input type="text" placeholder="Enter Parent Resource ID" name = "parentResourceId">
+                </div>
+            </div>
+            <div class="box">
+                <label class="checkbox-container">
+                    <span class="checkbox-label">Timestamp
+                        <input type="checkbox" id="toggleCheckboxTimestamp">
+                        <span class="checkmark"></span>
+                    </span>
+                </label>
+                <div class="input-box" id="inputBoxTimestamp">
+                    <input type="text" placeholder="Enter Timestamp" name = "timestamp">
+                </div>
+            </div>
+            <div class="box">
+                <label class="checkbox-container">
+                    <span class="checkbox-label">Resource ID
+                        <input type="checkbox" id="toggleCheckboxResourceID">
+                        <span class="checkmark"></span>
+                    </span>
+                </label>
+                <div class="input-box" id="inputBoxResourceID">
+                    <input type="text" placeholder="Enter  trace ID" name = "traceId">
+                </div>
+            </div>
+        </div>
+            <input type="submit" class="btn" value='SEARCH'>
+        </div>
+    </form>
+    <div class="log-results" id="logResults">
+        <!-- Results will appear here -->
+        <pre id="jsonOutput">
+            {% if result == "ok" %}
+            <script>
+                // Sample JSON data
+                var jsonData = {{ data | tojson | safe }};
+    
+                // Format JSON data with indentation
+                var formattedJson = JSON.stringify(jsonData, null, 2);
+    
+                // Display formatted JSON data in the pre tag
+                document.getElementById('jsonOutput').textContent = formattedJson;
+            </script>
+            {% elif result %}
+                <p>{{ result }}</p>
+            {% endif %}
+        </pre>
+    </div>
+
+    <script>
+        // JavaScript to toggle input box visibility for each checkbox
+        const checkboxIds = [
+            'toggleCheckboxLevel',
+            'toggleCheckboxMessage',
+            'toggleCheckboxID',
+            'toggleCheckboxSpan',
+            'toggleCheckboxCommit',
+            'toggleCheckboxParentResourceID',
+            'toggleCheckboxTimestamp',
+            'toggleCheckboxResourceID'
+        ];
+
+        const inputBoxIds = [
+            'inputBoxLevel',
+            'inputBoxMessage',
+            'inputBoxID',
+            'inputBoxSpan',
+            'inputBoxCommit',
+            'inputBoxParentResourceID',
+            'inputBoxTimestamp',
+            'inputBoxResourceID'
+        ];
+
+        for (let i = 0; i < checkboxIds.length; i++) {
+            const checkbox = document.getElementById(checkboxIds[i]);
+            const inputBox = document.getElementById(inputBoxIds[i]);
+
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    inputBox.style.display = 'block';
+                } else {
+                    inputBox.style.display = 'none';
+                }
+            });
+        }
+
+        function searchLogs() {
+            // This function would typically make an AJAX request to the server
+            // to perform the search based on input and selected filter
+
+           }
+ 
+    </script>
+</body>
+
+</html>
